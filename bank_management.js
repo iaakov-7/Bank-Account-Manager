@@ -1,4 +1,5 @@
 import { createCustomerFactory } from "./customer_factory.js";
+import { validateDepositWithdraw } from "./validation.js";
 
 export function manageBank() {
   const customers = [];
@@ -21,34 +22,16 @@ export function manageBank() {
     },
     deposit: function (Id, amount) {
       const cust = customers.find((customer) => customer.customerId === Id);
-      if (typeof cust === "undefined") {
-        return "Customer not found";
-      }
-      if (cust.isActive === false) {
-        return "Account not active";
-      }
-      if (isNaN(amount)) {
-        return "Amount must be number";
-      }
-      if (amount < 0) {
-        return "Cannot deposit negative amount";
+      if (validateDepositWithdraw(Id, amount, cust) !== "Success") {
+        return "Deposit failed";
       }
       cust.balance += amount;
       return "The money was deposited successfully";
     },
     withdraw: function (Id, amount) {
       const cust = customers.find((customer) => customer.customerId === Id);
-      if (typeof cust === "undefined") {
-        return "Customer not found";
-      }
-      if (cust.isActive === false) {
-        return "Account not active";
-      }
-      if (isNaN(amount)) {
-        return "Amount must be number";
-      }
-      if (amount < 0) {
-        return "Amount cannot be negative";
+      if (validateDepositWithdraw(Id, amount, cust) !== "Success") {
+        return "Withdraw failed";
       }
       if (cust.balance < amount) {
         return "There is not enough money.";
