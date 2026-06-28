@@ -57,6 +57,9 @@ function main() {
         break;
       case "0":
         login = false;
+        break;
+      default:
+        console.log("Enter numbers 0-7 only!");
     }
   }
 }
